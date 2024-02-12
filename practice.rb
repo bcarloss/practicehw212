@@ -27,3 +27,23 @@ blockchain = [
 # Anthony's KelloggCoin balance is 2650
 
 # 👇👇👇 Your code HERE 👇👇👇
+
+# Initialize a hash to keep track of each user's KelloggCoin balance
+balances = Hash.new(0) # Default balance is 0
+
+blockchain.each do |transaction|
+  # For ICO transactions, add the amount directly to the to_user's balance
+  if transaction["from_user"].nil?
+    balances[transaction["to_user"]] += transaction["amount"]
+  else
+    # For regular transactions, adjust balances for both from_user and to_user
+    balances[transaction["from_user"]] -= transaction["amount"]
+    balances[transaction["to_user"]] += transaction["amount"]
+  end
+end
+
+# Output the balance information
+balances.each do |user, balance|
+  puts "#{user.capitalize}'s KelloggCoin balance is #{balance}"
+end
+
